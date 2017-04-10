@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Upgrading from 0.3 to 0.4 - Grunt: JavaScript世界的构建工具 -- Grunt中文网</title><meta name="description" content="Grunt是基于Node.js的项目构建工具。它可以自动运行你所设定的任务。Grunt拥有数量庞大的插件，几乎任何你所要做的事情都可以用Grunt实现。"><meta name="keywords" content="Grunt, Gruntjs, 项目构建工具, web前端开发, HTML,CSS,JavaScript"><link rel="stylesheet" href="/static/css/main.css"><!--link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Lato:400,700')--><link rel="shortcut icon"href="/img/favicon.ico" type="image/x-icon"><!--link(href='/rss', rel='alternate', title='Grunt Blog Feed', type='application/atom+xml')--><script src="http://cdn.bootcss.com/modernizr/2.7.1/modernizr.min.js"></script></head><body class="page-docs page-secondary"><div class="navbar navbar-inverse"><div class="navbar-inner"><div class="container"><a href="/" class="brand"><img src="../img/grunt-logo.png" class="logo"></a><div class="nav-collapse collapse"><ul class="nav"><li><a href="/getting-started"><i class="icon-arrow-right"></i><span>快速入门</span></a></li><li><a href="/plugins"><i class="icon-power-cord"></i><span>插件列表</span></a></li><li><a href="/getting-started"><i class="icon-document-alt-stroke"></i><span>中文文档</span></a></li><li><a href="/api"><i class="icon-cog"></i><span>API</span></a></li></ul><form class="navbar-search pull-right"><input type="text" placeholder="Search" class="search-query"></form></div><!--.nav-collapse--></div></div></div><div class="content"><div class="container upgrading-from-0.3-to-0.4"><div class="row-fluid"><div class="span9 page"><div class="hero-unit"><h1><a class="anchor" href="#0.3-0.4" name="0.3-0.4">从0.3升级到0.4版本</a></h1>
+<p><em>注意，即使你能熟练的使用grunt，新的<a href="/getting-started">Getting start</a>指南都是值得一读的。</em></p>
+<p>Grunt现在被分割为三部分：<code>grunt</code>、<code>grunt-cli</code>和<code>grunt-init</code>。</p>
+<ol>
+<li>The npm module <code>grunt</code> should be installed locally to your project. It contains the code and logic for running tasks, loading plugins, etc.</li>
+<li>The npm module <code>grunt-cli</code> should be installed globally.  It puts the <code>grunt</code> command in your PATH so you can execute it anywhere. By itself, it doesn&#39;t do anything; its job is to load and run the Grunt that has been installed locally to your project, regardless of the version.  For more information about why this has changed, please read <a href="http://blog.nodejs.org/2011/03/23/npm-1-0-global-vs-local-installation">npm 1.0: Global vs Local installation</a>.</li>
+<li>The <code>init</code> task has been broken into its own npm module, <code>grunt-init</code>.  It should be installed globally with <code>npm install -g grunt-init</code> and run with the <code>grunt-init</code> command.  In the coming months, <a href="http://yeoman.io/">Yeoman</a> will completely replace grunt-init.  See the <a href="https://github.com/gruntjs/grunt-init">grunt-init project page</a> for more information.</li>
+</ol>
+<h2><a class="anchor" href="#grunt-0.3-notes" name="grunt-0.3-notes">Grunt 0.3 Notes</a></h2>
+<p>If you are upgrading from Grunt 0.3, make sure to uninstall global <code>grunt</code>:</p>
+<pre><code class="lang-shell">npm uninstall -g grunt</code></pre>
+<p><em>Note that for 0.3.x, plugin names and task configuration options may be different than those shown in &quot;The Gruntfile&quot; section.</em></p>
+<p><em>This file was named <code>grunt.js</code> for 0.3.x versions of Grunt.</em></p>
+<h2>预装的任务和插件</h2>
+<p>所有<code>grunt-contrib-*</code>系列的插件都是Grunt0.4才有的。然而，极有可能第三方为Grunt0.3所编写的插件还能继续在Grunt0.4中工作，如果它们被更新的话。我们也在积极的与插件作者一起努力确保尽快更新它们。</p>
+<p><em>将来的Grunt将致力于底层结构的解耦和，这样就可以保证插件不会受到未来更新的影响。</em></p>
+<h2>要求</h2>
+<ul>
+<li>Grunt现在依赖<code>0.8.0</code>及以上版本的Node.js。</li>
+</ul>
+<h2><a class="anchor" href="#the-gruntfile" name="the-gruntfile">The Gruntfile</a></h2>
+<ul>
+<li>The &quot;Gruntfile&quot; has changed from <code>grunt.js</code> to <code>Gruntfile.js</code>.</li>
+<li>CoffeeScript is supported in your <code>Gruntfile.coffee</code> project <code>Gruntfile</code> or <code>*.coffee</code> task files (transpiling to JS happens automatically).</li>
+</ul>
+<p>See the &quot;The Gruntfile&quot; section of the <a href="/getting-started">Getting started</a> guide for more information.</p>
+<h2><a class="anchor" href="#grunt" name="grunt">核心任务已经被重构为Grunt插件</a></h2>
+<p>Grunt0.3中所包含的8个核心任务现在都变成了独立的Grunt插件。 其中每个插件都变成了独立的npm模块，而且必须被作为一个插件安装使用。对应的信息在<a href="/getting-started">Grunt入门</a>指南的&quot;加载Grunt插件和任务&quot;一节。</p>
+<ul>
+<li>concat → <a href="https://github.com/gruntjs/grunt-contrib-concat">grunt-contrib-concat</a> plugin</li>
+<li>init → stand-alone <a href="https://github.com/gruntjs/grunt-init">grunt-init</a> utility</li>
+<li>lint → <a href="https://github.com/gruntjs/grunt-contrib-jshint">grunt-contrib-jshint</a> plugin</li>
+<li>min → <a href="https://github.com/gruntjs/grunt-contrib-uglify">grunt-contrib-uglify</a> plugin</li>
+<li>qunit → <a href="https://github.com/gruntjs/grunt-contrib-qunit">grunt-contrib-qunit</a> plugin</li>
+<li>server → <a href="https://github.com/gruntjs/grunt-contrib-connect">grunt-contrib-connect</a> plugin</li>
+<li>test → <a href="https://github.com/gruntjs/grunt-contrib-nodeunit">grunt-contrib-nodeunit</a> plugin</li>
+<li>watch → <a href="https://github.com/gruntjs/grunt-contrib-watch">grunt-contrib-watch</a> plugin</li>
+</ul>
+<p>Some task names and options have changed.  Be sure to see each plugin&#39;s documentation as linked above for the latest configuration details.</p>
+<h2>配置</h2>
+<p>The configuration format for Grunt 0.4 tasks has been standardized and greatly enhanced. See the <a href="/configuring-tasks">Configuring tasks</a> guide, as well as individual plugin documentation for more information.</p>
+<ul>
+<li>File globbing (wildcard) patterns may now be negated to exclude matched files.</li>
+<li>Tasks now support a standard <code>options</code> object.</li>
+<li>Tasks now support a standard <code>files</code> object.</li>
+</ul>
+<p><code>&lt;% %&gt;</code> style template strings specified as config data inside the <code>Gruntfile</code> are automatically expanded, see the <a href="/grunt.template">grunt.template</a> documentation for more information.</p>
+<p><strong>Directives have been removed</strong>, but their functionality has been retained. These replacements can be made:</p>
+<ul>
+<li><code>&#39;&lt;config:prop.subprop&gt;&#39;</code> → <code>&#39;&lt;%= prop.subprop %&gt;&#39;</code></li>
+<li><code>&#39;&lt;json:file.json&gt;&#39;</code> → <code>grunt.file.readJSON(&#39;file.json&#39;)</code></li>
+<li><code>&#39;&lt;file_template:file.js&gt;&#39;</code> → <code>grunt.template.process(grunt.file.read(&#39;file.js&#39;))</code></li>
+</ul>
+<p>Instead of specifying a banner in a file list with <code>&#39;&lt;banner&gt;&#39;</code> or <code>&#39;&lt;banner:prop.subprop&gt;&#39;</code>, the <a href="https://github.com/gruntjs/grunt-contrib-concat">grunt-contrib-concat</a> and <a href="https://github.com/gruntjs/grunt-contrib-uglify">grunt-contrib-uglify</a> plugins each have a <code>banner</code> option.</p>
+<p>Instead of stripping banners from files individually with <code>&#39;&lt;file_strip_banner:file.js&gt;&#39;</code>, the <a href="https://github.com/gruntjs/grunt-contrib-concat">grunt-contrib-concat</a> and <a href="https://github.com/gruntjs/grunt-contrib-uglify">grunt-contrib-uglify</a> plugins each have an option to strip/preserve banners.</p>
+<h2><a class="anchor" href="#alias-task-changes" name="alias-task-changes">Alias task changes</a></h2>
+<p>When specifying an alias task, the list of tasks to run must now be specified as an array.</p>
+<pre><code class="lang-js"><span class="comment">// v0.3.x (old format)</span>
+grunt.registerTask(<span class="string">'default'</span>, <span class="string">'jshint nodeunit concat'</span>);
+<span class="comment">// v0.4.x (new format)</span>
+grunt.registerTask(<span class="string">'default'</span>, [<span class="string">'jshint'</span>, <span class="string">'nodeunit'</span>, <span class="string">'concat'</span>]);</code></pre>
+<h2><a class="anchor" href="#task-arguments-may-now-contain-spaces" name="task-arguments-may-now-contain-spaces">Task arguments may now contain spaces</a></h2>
+<p>The aforementioned alias task change (task lists must be specified as an array) makes this possible. Just be sure to surround task arguments containing spaces with quotes when specifying them on the command line, so they can be properly parsed.</p>
+<pre><code class="lang-shell">grunt my-task:argument-without-spaces <span class="string">"other-task:argument with spaces"</span></code></pre>
+<h2><a class="anchor" href="#character-encodings" name="character-encodings">Character encodings</a></h2>
+<p>The <a href="/grunt.file#wiki-grunt-file-defaultencoding">file.defaultEncoding</a> method was added to normalize character encodings, and all <code>grunt.file</code> methods have been updated to support the specified encoding.</p>
+<h2><a class="anchor" href="#helpers" name="helpers">Helpers</a></h2>
+<p>Grunt&#39;s helper system has been removed in favor of node <code>require</code>. For a concise example on how to share functionality between Grunt plugins, please see <a href="https://github.com/gruntjs/grunt-lib-legacyhelpers">grunt-lib-legacyhelpers</a>. Plugin authors are encouraged to upgrade their plugins.</p>
+<h2><a class="anchor" href="#api" name="api">API</a></h2>
+<p>The Grunt API saw substantial changes from 0.3 to 0.4.</p>
+<ul>
+<li><a href="/grunt">grunt</a><ul>
+<li>Removed <code>grunt.registerHelper</code> and <code>grunt.renameHelper</code> methods.</li>
+</ul>
+</li>
+<li><a href="/grunt.config">grunt.config</a><ul>
+<li>Changed <a href="/grunt.config#wiki-grunt-config-get">config.get</a> method to automatically recursively expand <code>&lt;% %&gt;</code> templates.</li>
+<li>Added <a href="/grunt.config#wiki-grunt-config-getraw">config.getRaw</a> method that will retrieve raw (unexpanded) config data.</li>
+<li>Changed <a href="/grunt.config#wiki-grunt-config-process">config.process</a> method to now process a value as if it had been retrieved from the config, expanding templates recursively. This method is called internally inside of <code>config.get</code>, but <em>not</em> inside of <code>config.getRaw</code>.</li>
+</ul>
+</li>
+<li><a href="/grunt.event">grunt.event</a> added so that tasks may emit events.</li>
+<li><a href="/grunt.fail">grunt.fail</a><ul>
+<li>Won&#39;t emit a beep if <code>--no-color</code> option specified.</li>
+<li>Added <code>fail.code</code> exit code map.</li>
+<li>Removed <code>fail.warnAlternate</code> method.</li>
+</ul>
+</li>
+<li><a href="/grunt.file">grunt.file</a><ul>
+<li>Tasks are no longer automatically loaded from <code>~/.grunt/tasks/</code> directory (install them locally to your project!).</li>
+<li>Added <a href="/grunt.file#wiki-grunt-file-defaultencoding">file.defaultEncoding</a> method for normalizing character encoding across all <code>grunt.file</code> methods.</li>
+<li>Added <a href="/grunt.file#wiki-grunt-file-delete">file.delete</a> method.</li>
+<li>Added relatively self-explanatory <a href="/grunt.file#wiki-grunt-file-exists">file.exists</a>, <a href="/grunt.file#wiki-grunt-file-isdir">file.isDir</a>, <a href="/grunt.file#wiki-grunt-file-isfile">file.isFile</a>, <a href="/grunt.file#wiki-grunt-file-islink">file.isLink</a>, <a href="/grunt.file#wiki-grunt-file-ispathcwd">file.isPathCwd</a>, <a href="/grunt.file#wiki-grunt-file-ispathincwd">file.isPathInCwd</a>, <a href="/grunt.file#wiki-grunt-file-doespathcontain">file.doesPathContain</a>, <a href="/grunt.file#wiki-grunt-file-arepathsequivalent">file.arePathsEquivalent</a> testing methods.</li>
+<li>Added <a href="/grunt.file#wiki-grunt-file-match">file.match</a> and <a href="/grunt.file#wiki-grunt-file-ismatch">file.isMatch</a> methods to facilitate matching wildcard patterns against file paths.</li>
+<li>Added <a href="/grunt.file#wiki-grunt-file-expandmapping">file.expandMapping</a> method for use in generating 1-to-1 src-dest file mappings.</li>
+<li>Added <a href="/grunt.file#wiki-grunt-file-readyaml">file.readYAML</a> method.</li>
+<li>Changed <a href="/grunt.file#wiki-grunt-file-findup">file.findup</a> to use the <a href="https://github.com/cowboy/node-findup-sync">findup-sync</a> module.</li>
+<li>Changed <a href="/grunt.file#wiki-grunt-file-glob">file.glob</a> to use the <a href="https://github.com/isaacs/node-glob">glob</a> module.</li>
+<li>Added <a href="/grunt.file#wiki-grunt-file-minimatch">file.minimatch</a> which exposes the <a href="https://github.com/isaacs/minimatch">minimatch</a> module.</li>
+<li>Removed <code>file.userDir</code> method (moved into <a href="https://github.com/gruntjs/grunt-init">grunt-init</a>).</li>
+<li>Removed <code>file.clearRequireCache</code> method.</li>
+<li>Removed <code>file.expandFiles</code> and <code>file.expandDirs</code> methods, use the <code>filter</code> option of <code>file.expand</code> instead.</li>
+<li>Removed <code>file.expandFileURLs</code> method. Don&#39;t specify URLs where files should be specified (eg. the qunit task now allows for a <code>urls</code> option).</li>
+</ul>
+</li>
+<li><a href="/grunt#wiki-grunt-task">grunt.task</a><ul>
+<li>Tasks registered with both <a href="/grunt.task#wiki-grunt-task-registertask">task.registerTask</a> and <a href="/grunt.task#wiki-grunt-task-registermultitask">task.registerMultiTask</a> get a <code>this.options</code> method.</li>
+<li>Added <a href="/grunt.task#wiki-grunt-task-normalizemultitaskfiles">task.normalizeMultiTaskFiles</a> method to facilitate the normalization of multi task <code>files</code> objects into the <code>this.file</code> property.</li>
+<li>Removed <code>task.registerHelper</code> and <code>task.renameHelper</code> methods.</li>
+<li>Removed <code>task.searchDirs</code> property.</li>
+<li>Removed <code>task.expand</code> <code>task.expandDirs</code> <code>task.expandFiles</code> <code>task.getFile</code> <code>task.readDefaults</code> methods (moved into <a href="https://github.com/gruntjs/grunt-init">grunt-init</a>).</li>
+</ul>
+</li>
+<li><a href="/grunt#wiki-grunt-package">grunt.package</a> reflects the metadata stored in grunt&#39;s <code>package.json</code>.</li>
+<li><a href="/grunt#wiki-grunt-version">grunt.version</a> is the current version of Grunt as a string.</li>
+<li><a href="/grunt.template">grunt.template</a><ul>
+<li>Added <a href="/grunt.template#wiki-grunt-template-adddelimiters">template.addDelimiters</a> method to add new template delimiters.</li>
+<li>Added <a href="/grunt.template#wiki-grunt-template-setdelimiters">template.setDelimiters</a> method to select template delimiters.</li>
+<li>The <code>init</code> and <code>user</code> template delimiters have been removed, but you can add them in again if you need to with <code>template.addDelimiters</code> (<a href="https://github.com/gruntjs/grunt-init">grunt-init</a> uses this to enable the <code>{% %}</code> template delimiters).</li>
+</ul>
+</li>
+<li><a href="/grunt.util">grunt.util</a> replaces the now-removed <code>grunt.utils</code>.<ul>
+<li>Changed <code>util._</code> to use <a href="http://lodash.com/">Lo-Dash</a></li>
+<li>Added the <a href="/grunt.util#wiki-grunt-util-callbackify">util.callbackify</a> method.</li>
+<li>Changed the <a href="/grunt.util#wiki-grunt-util-spawn">util.spawn</a> method to be much better behaved and pass more consistent arguments into its callback.</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" href="#task-plugin-authors" name="task-plugin-authors">Task / plugin authors</a></h2>
+<p><strong>Plugin authors, please indicate clearly on your repository README which version number of your Grunt plugin breaks compatibility with Grunt 0.3.</strong></p>
+<h3><a class="anchor" href="#tasks" name="tasks">Tasks</a></h3>
+<ul>
+<li>Multi tasks<ul>
+<li>Multiple src-dest file mappings may now be specified per target in a <code>files</code> object (this is optional).</li>
+</ul>
+</li>
+<li><a href="/grunt.task#wiki-this-files">this.files / grunt.task.current.files</a><ul>
+<li>The <code>this.files</code> property is an array of src-dest file mapping objects to be iterated over in your multi task. It will always be an array, and you should always iterate over it, even if the most common use case is to specify a single file.</li>
+<li>Each src-dest file mapping object has a <code>src</code> and <code>dest</code> property (and possibly others, depending on what the user specified). The <code>src</code> property is already expanded from whatever glob pattern the user may have specified.</li>
+</ul>
+</li>
+<li><a href="/grunt.task#wiki-this-filessrc">this.filesSrc / grunt.task.current.filesSrc</a><ul>
+<li>The <code>this.filesSrc</code> property is a reduced, uniqued array of all files matched by all specified <code>src</code> properties. Useful for read-only tasks.</li>
+</ul>
+</li>
+<li><a href="/grunt.task#wiki-this-options">this.options / grunt.task.current.options</a><ul>
+<li>The <code>this.options</code> method may be used within tasks to normalize options. Inside a task, you may specify options defaults like: <code>var options = this.options({option: &#39;defaultvalue&#39;, ...});</code></li>
+</ul>
+</li>
+</ul>
+<h3><a class="anchor" href="#plugins" name="plugins">Plugins</a></h3>
+<ul>
+<li>An updated <code>gruntplugin</code> template has been created for Grunt 0.4-compatible plugins, and is available in the standalone <a href="https://github.com/gruntjs/grunt-init">grunt-init</a>.</li>
+</ul>
+<h2><a class="anchor" href="#troubleshooting" name="troubleshooting">Troubleshooting</a></h2>
+<ul>
+<li>If you had previously installed a development version of Grunt 0.4 or any grunt-contrib plugins, be sure to flush your npm cache with <code>npm cache clean</code> first to ensure that you are pulling the final version of Grunt and grunt-contrib plugins.</li>
+</ul>
+<div class="end-link">Found an error in the documentation?
+<a href='https://github.com/gruntjs/grunt-docs/issues'>File an issue</a>.</div></div></div><div class="span3"><div class="well sidebar-nav"><ul class="nav nav-list"><li class="nav-header"><i class="icon-document-alt-stroke"></i><span>中文文档</span></li><li><a href="/getting-started" class="false">快速入门</a></li><li><a href="/configuring-tasks" class="false">配置任务</a></li><li><a href="/sample-gruntfile" class="false">Gruntfile 实例</a></li><li><a href="/creating-tasks" class="false">创建任务</a></li><li><a href="/creating-plugins" class="false">创建插件</a></li><li><a href="/using-the-cli" class="false">使用命令行工具</a></li></ul><ul class="nav nav-list"><li class="nav-header"><span>进阶知识</span></li><li><a href="/api" class="false">API</a></li><li><a href="/installing-grunt" class="false">安装 Grunt</a></li><li><a href="/frequently-asked-questions" class="false">常见问题</a></li><li><a href="/project-scaffolding" class="false">项目脚手架</a></li></ul><ul class="nav nav-list"><li class="nav-header"><span>社区</span></li><li><a href="/help-resources" class="false">有用的资源</a></li><li><a href="/who-uses-grunt" class="false">Grunt 用户列表</a></li><li><a href="/built-with-grunt-badge" class="false">Grunt 徽章</a></li><li><a href="/contributing" class="false">贡献</a></li><li><a href="/development-team" class="false">研发团队</a></li></ul><ul class="nav nav-list"><li class="nav-header"><span>升级指南</span></li><li><a href="/upgrading-from-0.3-to-0.4" class="active">从 0.3 升级到 0.4 版本</a></li></ul><!--include blocks/advertisements--></div></div></div></div></div><footer class="grunt-footer"><div class="inner"><div class="container"><ul class="pull-right"><!--li<a href="/blog">博客</a>--><li><a href="/upgrading-from-0.3-to-0.4">升级指南</a></li><li><a href="/contributing">贡献</a></li><li class="social"><a href="https://github.com/gruntjs/" alt="Grunt on GitHub"><span class="icon-github"></span></a></li><!--li.social<a href="https://twitter.com/gruntjs/" alt="Grunt on Twitter"><span class="icon-twitter"></span></a>--><!--li.social<a href="/rss" alt="Grunt blog RSS feed"><span class="icon-feed"></span></a>--></ul><ul class="pull-left"><li>Grunt development is sponsored by <a href="http://bocoup.com/" alt="Bocoup">Bocoup</a></li><li>&nbsp;&nbsp;|&nbsp;&nbsp; </li><li>Grunt中文文档由<a href="http://www.bootcss.com/" alt="Bootstrap中文网" target="_blank">Bootstrap中文网</a>整理</li></ul></div></div></footer><script>var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F9630d143ce27a7b287648e78370a3186' type='text/javascript'%3E%3C/script%3E"));
+</script></body></html>
